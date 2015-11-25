@@ -1,0 +1,95 @@
+#+SETUPFILE: setup.org
+
+* Contents                                                         :toc_3_gh:
+ - [[#namespace-org-wunderkindel][Namespace: org-wunderkind.el]]
+     - [[#note-for-authors--contributors][Note for authors / contributors]]
+   - [[#public-functions][Public functions]]
+   - [[#log-functions][Log functions]]
+   - [[#helper-functions][Helper functions]]
+   - [[#complete-namespace-definition][Complete namespace definition]]
+
+* TODO Namespace: org-wunderkind.el
+This namespace provides...
+
+*** Note for authors / contributors
+
+If this namespace utilizes code templates defined in
+[[file:libraryofbabel.org][libraryofbabel.org]], and you want to tangle it directly from Emacs,
+you'll first need to notify Org-mode about the presence of these
+templates via =C-c C-v i= and then choose =libraryofbabel.org= from
+this directory. This only needs to be done once per emacs session (or
+whenever you've updated a template in that file). The supplied
+=tangle.sh= script automatically includes this file, so this step
+isn't necessary from the command line.
+
+** TODO Public functions
+
+#+BEGIN_SRC emacs-lisp :noweb-ref main
+  ;; TODO main code...
+#+END_SRC
+
+** TODO Log functions
+#+BEGIN_SRC emacs-lisp :var level="" :noweb-ref log
+(defconst orgwunderkind-log-no-log 0 "No log level except for error.")
+(defconst orgwunderkind-log-error  1 "Error log level.")
+(defconst orgwunderkind-log-warn   2 "Warn log level.")
+(defconst orgwunderkind-log-info   3 "Info log level.")
+(defconst orgwunderkind-log-debug  4 "Debug log level.")
+(defconst orgwunderkind-log-trace  5 "Trace log level.")
+
+(defcustom orgwunderkind-log-level orgwunderkind-log-info
+  "Set log level.
+Levels:
+0 - no log   (`orgwunderkind-log-quiet')
+1 - errors   (`orgwunderkind-log-error')
+2 - warnings (`orgwunderkind-log-warn')
+3 - info     (`orgwunderkind-log-info')
+4 - debug    (`orgwunderkind-log-debug')
+5 - trace    (`orgwunderkind-log-trace')
+To change such level, add this to your init.el file:
+\(custom-set-variables '\(orgwunderkind-log-level orgwunderkind-log-trace\)\)"
+  :options (list orgwunderkind-log-no-log
+                 orgwunderkind-log-error
+                 orgwunderkind-log-warn
+                 orgwunderkind-log-info
+                 orgwunderkind-log-debug
+                 orgwunderkind-log-trace)
+  :type 'integer
+  :require 'org-wunderkind
+  :group 'org-wunderkind)
+
+(defun orgwunderkind-log-msg (level &rest args)
+  "Log message with LEVEL.
+Depending on `orgwunderkind-log-level', this will be displayed or not.
+All errors are displayed anyway.
+ARGS constitutes the parameters to feed to message."
+  (when (or (<= level orgwunderkind-log-level) (eq orgwunderkind-log-error level))
+    (apply 'message (format "org-wunderkind - %s" (car args)) (cdr args))))
+
+(orgwunderkind-log-msg orgwunderkind-log-debug "orgwunderkind-log loaded!")
+#+END_SRC
+
+** TODO Helper functions
+
+The following code blocks demonstrate how to use code templates (with
+and without arguments) defined in [[file:libraryofbabel.org][libraryofbabel.org]]. Always make sure
+such code blocks have the =:noweb yes= header flag in order for the
+templates to be resolved.
+
+#+BEGIN_SRC emacs-lisp :noweb-ref helpers
+  <<lob-org-wunderkind-greetings(msg="hello world")>>
+
+  (println
+   "The result of" '<<lob-org-wunderkind-verbatim>> "is"
+   <<lob-org-wunderkind-verbatim>>)
+#+END_SRC
+
+** Complete namespace definition
+
+#+BEGIN_SRC emacs-lisp :tangle ../babel/src/org_wunderkind/core.el :noweb yes :mkdirp yes :padline no
+  (ns org-wunderkind.core)
+
+  <<helpers>>
+
+  <<main>>
+#+END_SRC

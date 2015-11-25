@@ -1,0 +1,50 @@
+#+SETUPFILE: setup.org
+
+* The org-wunderkind Library of Babel
+
+This file contains shared and configurable code templates for various
+parts of this project. Templates using variables are wrapped in a
+simple Elisp form, but you can also define verbatim templates if vars
+aren't needed...
+
+** Example template with variables
+
+#+NAME: lob-org-wunderkind-greetings
+#+BEGIN_SRC emacs-lisp :var msg=""
+  (replace-regexp-in-string
+   "~~msg~~" msg
+   "(defn show-greetings
+     [] (println \"~~msg~~\"))")
+#+END_SRC
+
+** Example verbatim template
+
+#+NAME: lob-org-wunderkind-verbatim
+#+BEGIN_SRC emacs-lisp
+  (* 12345679 7.2)
+#+END_SRC
+
+** Utilities
+
+#+NAME: lob-org-wunderkind-replace-in-string
+#+BEGIN_SRC emacs-lisp :var msg=""
+(defun orgwunderkind-replace-in-string (expression-to-replace replacement-expression string-input)
+  "Given an expression-to-replace and a replacement-expression, replace such in string-input."
+  (replace-regexp-in-string expression-to-replace replacement-expression string-input 'fixed-case))
+#+END_SRC
+
+#+RESULTS: lob-org-wunderkind-replace-in-string
+: orgwunderkind-replace-in-string
+
+#+NAME: lob-org-wunderkind-utils-symbol
+#+BEGIN_SRC emacs-lisp :var sym="" :var n=0
+(defun orgwunderkind-utils-symbol (sym n)
+  "Compute the repetition of a symbol SYM N times as a string."
+  (--> n
+       (-repeat it sym)
+       (s-join "" it)))
+#+END_SRC
+
+#+RESULTS: lob-org-wunderkind-utils-symbol
+: orgwunderkind-utils-symbol
+
