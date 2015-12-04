@@ -23,7 +23,21 @@ aren't needed...
 #+BEGIN_SRC emacs-lisp
   (* 12345679 7.2)
 #+END_SRC
+** TODO Setup
 
+#+NAME: setup 
+#+BEGIN_SRC emacs-lisp
+(defgroup org-wunderkind nil "Org-wunderkind customization group"
+  :tag "Org-wunderkind"
+  :version "0.0.1"
+  :group 'org)
+
+(defconst org-wunderkind-consumer-key nil
+  "ID representing the user.")
+
+(defconst org-wunderkind-access-token nil
+  "Read/write access token to use wunderkind on behalf of the user.")
+#+END_SRC
 ** Utilities
 
 #+NAME: lob-org-wunderkind-replace-in-string
